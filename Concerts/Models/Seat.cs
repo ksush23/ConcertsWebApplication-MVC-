@@ -10,6 +10,7 @@ namespace Concerts.Models
         public int Seat_ID { get; set; }
         public int Seat_Line_number { get; set; }
         public int Seat_Number { get; set; }
+        public int Seat_Sector_ID { get; set; }
 
         public ICollection<Ticket>  Ticket { get; set; }
         public Sector Sector { get; set; }
