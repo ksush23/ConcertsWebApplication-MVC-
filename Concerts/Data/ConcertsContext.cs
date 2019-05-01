@@ -20,5 +20,16 @@ namespace Concerts.Data
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketState> TicketStates { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Artist>().ToTable("Artist");
+            modelBuilder.Entity<Concert>().ToTable("Concert");
+            modelBuilder.Entity<Place>().ToTable("Place");
+            modelBuilder.Entity<Seat>().ToTable("Seat");
+            modelBuilder.Entity<Sector>().ToTable("Sector");
+            modelBuilder.Entity<Ticket>().ToTable("Ticket");
+            modelBuilder.Entity<TicketState>().ToTable("TicketState");
+        }
     }
 }

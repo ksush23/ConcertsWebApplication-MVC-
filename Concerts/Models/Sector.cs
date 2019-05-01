@@ -7,9 +7,9 @@ namespace Concerts.Models
 {
     public class Sector
     {
-        public int Sector_ID { get; set; }
+        public int SectorId { get; set; }
         public string Sector_Name { get; set; }
-        public int Sector_Place_ID { get; set; }
+        public int SectorPlaceId { get; set; }
 
         public ICollection<Seat> Seat { get; set; }
         public Place Place { get; set; }

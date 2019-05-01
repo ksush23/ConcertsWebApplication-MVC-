@@ -7,7 +7,7 @@ namespace Concerts.Models
 {
     public class Place
     {
-        public int Place_ID { get; set; }
+        public int PlaceId { get; set; }
         public string Place_Name { get; set; }
         public string Place_Address { get; set; }
 

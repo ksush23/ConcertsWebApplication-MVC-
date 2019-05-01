@@ -7,7 +7,7 @@ namespace Concerts.Models
 {
     public class Artist
     {
-        public int Artist_ID { get; set; }
+        public int ArtistId { get; set; }
         public string Artist_Name { get; set; }
         public string Artist_Genre { get; set; }
 
