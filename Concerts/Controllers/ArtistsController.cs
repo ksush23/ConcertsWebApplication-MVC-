@@ -34,7 +34,11 @@ namespace Concerts.Controllers
             }
 
             var artist = await _context.Artists
+                .Include(s => s.Concerts)
+                .ThenInclude(e => e.Place)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ArtistId == id);
+
             if (artist == null)
             {
                 return NotFound();
@@ -56,11 +60,21 @@ namespace Concerts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ArtistId,Artist_Name,Artist_Genre")] Artist artist)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(artist);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(artist);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
             return View(artist);
         }
@@ -81,43 +95,39 @@ namespace Concerts.Controllers
             return View(artist);
         }
 
-        // POST: Artists/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArtistId,Artist_Name,Artist_Genre")] Artist artist)
+        public async Task<IActionResult> EditPost(int? id)
         {
-            if (id != artist.ArtistId)
+            if (id == null)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var artistToUpdate = await _context.Artists.FirstOrDefaultAsync(s => s.ArtistId == id);
+            if (await TryUpdateModelAsync<Artist>(
+                artistToUpdate,
+                "",
+                s => s.ArtistId, s => s.Artist_Genre, s => s.Artist_Name))
             {
                 try
                 {
-                    _context.Update(artist);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException /* ex */)
                 {
-                    if (!ArtistExists(artist.ArtistId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(artist);
+            return View(artistToUpdate);
         }
 
+
         // GET: Artists/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -125,10 +135,18 @@ namespace Concerts.Controllers
             }
 
             var artist = await _context.Artists
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ArtistId == id);
             if (artist == null)
             {
                 return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
             }
 
             return View(artist);
@@ -140,9 +158,22 @@ namespace Concerts.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var artist = await _context.Artists.FindAsync(id);
-            _context.Artists.Remove(artist);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (artist == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _context.Artists.Remove(artist);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
         }
 
         private bool ArtistExists(int id)

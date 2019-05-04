@@ -11,6 +11,6 @@ namespace Concerts.Models
         public string Artist_Name { get; set; }
         public string Artist_Genre { get; set; }
 
-        public ICollection<Concert> Concert { get; set; }
+        public ICollection<Concert> Concerts { get; set; }
     }
 }

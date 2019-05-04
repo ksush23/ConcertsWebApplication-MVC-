@@ -10,17 +10,39 @@
     <h4>Artist</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Artist_Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Artist_Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Artist_Genre)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Artist_Genre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Concerts)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Place</th>
+                    <th>Time and data</th>
+                </tr>
+                @foreach (var item in Model.Concerts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Place.Place_Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Concert_TimeData)
+                        </td>
+                    </tr>
+                }
+            </table>
         </dd>
     </dl>
 </div>

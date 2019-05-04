@@ -12,13 +12,10 @@ namespace Concerts.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
-            if (context.Artists.Any())
+            // Look for any artists.
+            if (!context.Artists.Any())
             {
-                return;   // DB has been seeded
-            }
-
-            var artists = new Artist[]
+                var artists = new Artist[]
             {
             new Artist{Artist_Name = "Imagine Dragons", Artist_Genre = "Indi rock"},
             new Artist{Artist_Name = "Hurts", Artist_Genre = "Pop"},
@@ -34,13 +31,17 @@ namespace Concerts.Data
             new Artist{Artist_Name = "Олег Винник", Artist_Genre = "Pop"},
             new Artist{Artist_Name = "Oxxymiron", Artist_Genre = "Rap"}
             };
-            foreach (Artist a in artists)
-            {
-                context.Artists.Add(a);
+                foreach (Artist a in artists)
+                {
+                    context.Artists.Add(a);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            var concerts = new Concert[]
+
+            if (!context.Concerts.Any())
+            {
+                var concerts = new Concert[]
             {
             new Concert{Concert_TimeData = DateTime.Parse("2018-09-01"), ConcertArtistId = 1, ConcertPlaceId = 2},
             new Concert{Concert_TimeData = DateTime.Parse("2018-10-02"), ConcertArtistId = 2, ConcertPlaceId = 2},
@@ -62,13 +63,17 @@ namespace Concerts.Data
             new Concert{Concert_TimeData = DateTime.Parse("2017-04-15"), ConcertArtistId = 13, ConcertPlaceId = 1},
             new Concert{Concert_TimeData = DateTime.Parse("2018-06-19"), ConcertArtistId = 13, ConcertPlaceId = 2}
             };
-            foreach (Concert c in concerts)
-            {
-                context.Concerts.Add(c);
+                foreach (Concert c in concerts)
+                {
+                    context.Concerts.Add(c);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            var places = new Place[]
+            if (!context.Places.Any())
+            {
+
+                var places = new Place[]
             {
             new Place{Place_Name = "НСК Олімпійський", Place_Address = "Київ"},
             new Place{Place_Name = "Велотрек СКА", Place_Address = "Львів"},
@@ -83,13 +88,16 @@ namespace Concerts.Data
             new Place{Place_Name = "Чернівецька філармонія", Place_Address = "Чернівці"},
             new Place{Place_Name = "Палац Україна", Place_Address = "Київ"}
             };
-            foreach (Place p in places)
-            {
-                context.Places.Add(p);
+                foreach (Place p in places)
+                {
+                    context.Places.Add(p);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            var seats = new Seat[]
+            if (!context.Seats.Any())
+            {
+                var seats = new Seat[]
             {
             new Seat{Seat_Number = 1, Seat_Line_number = 1, SeatSectorId = 1},
             new Seat{Seat_Number = 1, Seat_Line_number = 1, SeatSectorId = 2},
@@ -104,71 +112,84 @@ namespace Concerts.Data
             new Seat{Seat_Number = 1, Seat_Line_number = 1, SeatSectorId = 11},
             new Seat{Seat_Number = 1, Seat_Line_number = 1, SeatSectorId = 12}
             };
-            foreach (Seat s in seats)
-            {
-                context.Seats.Add(s);
+                foreach (Seat s in seats)
+                {
+                    context.Seats.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            var sectors = new Sector[]
+            if (!context.Sectors.Any())
             {
-            new Sector{SectorId = 1, Sector_Name = "Сектор 1", SectorPlaceId = 1},
-            new Sector{SectorId = 2, Sector_Name = "Сектор 1", SectorPlaceId = 2},
-            new Sector{SectorId = 3, Sector_Name = "Сектор 1", SectorPlaceId = 3},
-            new Sector{SectorId = 4, Sector_Name = "Сектор 1", SectorPlaceId = 4},
-            new Sector{SectorId = 5, Sector_Name = "Сектор 1", SectorPlaceId = 5},
-            new Sector{SectorId = 6, Sector_Name = "Сектор 1", SectorPlaceId = 6},
-            new Sector{SectorId = 7, Sector_Name = "Сектор 1", SectorPlaceId = 7},
-            new Sector{SectorId = 8, Sector_Name = "Сектор 1", SectorPlaceId = 8},
-            new Sector{SectorId = 9, Sector_Name = "Сектор 1", SectorPlaceId = 9},
-            new Sector{SectorId = 10, Sector_Name = "Сектор 1", SectorPlaceId = 10},
-            new Sector{SectorId = 11, Sector_Name = "Сектор 1", SectorPlaceId = 11},
-            new Sector{SectorId = 12, Sector_Name = "Сектор 1", SectorPlaceId = 12}
-            };
-            foreach (Sector s in sectors)
-            {
-                context.Sectors.Add(s);
-            }
-            context.SaveChanges();
 
-            var ticket_states = new TicketState[]
+                var sectors = new Sector[]
             {
-            new TicketState{TicketStateId = 1, TicketState_Name = "Вільно"},
-            new TicketState{TicketStateId = 2, TicketState_Name = "Заброньовано"},
-            new TicketState{TicketStateId = 3, TicketState_Name = "Куплено"}
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 1},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 2},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 3},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 4},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 5},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 6},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 7},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 8},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 9},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 10},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 11},
+            new Sector{Sector_Name = "Сектор 1", SectorPlaceId = 12}
             };
-            foreach (TicketState ts in ticket_states)
-            {
-                context.TicketStates.Add(ts);
+                foreach (Sector s in sectors)
+                {
+                    context.Sectors.Add(s);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
 
-            var tickets = new Ticket[]
+            if (!context.TicketStates.Any())
             {
-            new Ticket{TicketId = 1, TicketStateId = 1, TicketConcertId = 1, TicketSeatId = 1, Ticket_Price = 1200},
-            new Ticket{TicketId = 2, TicketStateId = 1, TicketConcertId = 2, TicketSeatId = 2, Ticket_Price = 1500},
-            new Ticket{TicketId = 3, TicketStateId = 1, TicketConcertId = 3, TicketSeatId = 3, Ticket_Price = 1400},
-            new Ticket{TicketId = 4, TicketStateId = 1, TicketConcertId = 4, TicketSeatId = 4, Ticket_Price = 900},
-            new Ticket{TicketId = 5, TicketStateId = 1, TicketConcertId = 5, TicketSeatId = 5, Ticket_Price = 850},
-            new Ticket{TicketId = 6, TicketStateId = 1, TicketConcertId = 6, TicketSeatId = 6, Ticket_Price = 1700},
-            new Ticket{TicketId = 7, TicketStateId = 1, TicketConcertId = 7, TicketSeatId = 7, Ticket_Price = 1300},
-            new Ticket{TicketId = 8, TicketStateId = 1, TicketConcertId = 8, TicketSeatId = 8, Ticket_Price = 1200},
-            new Ticket{TicketId = 9, TicketStateId = 1, TicketConcertId = 9, TicketSeatId = 9, Ticket_Price = 1250},
-            new Ticket{TicketId = 10, TicketStateId = 1, TicketConcertId = 10, TicketSeatId = 10, Ticket_Price = 1560},
-            new Ticket{TicketId = 11, TicketStateId = 1, TicketConcertId = 11, TicketSeatId = 1, Ticket_Price = 2300},
-            new Ticket{TicketId = 12, TicketStateId = 1, TicketConcertId = 12, TicketSeatId = 6, Ticket_Price = 2000},
-            new Ticket{TicketId = 13, TicketStateId = 1, TicketConcertId = 13, TicketSeatId = 2, Ticket_Price = 550},
-            new Ticket{TicketId = 14, TicketStateId = 1, TicketConcertId = 14, TicketSeatId = 7, Ticket_Price = 3100},
-            new Ticket{TicketId = 15, TicketStateId = 1, TicketConcertId = 15, TicketSeatId = 3, Ticket_Price = 1950},
-            new Ticket{TicketId = 16, TicketStateId = 1, TicketConcertId = 16, TicketSeatId = 4, Ticket_Price = 1000},
-            new Ticket{TicketId = 17, TicketStateId = 1, TicketConcertId = 17, TicketSeatId = 10, Ticket_Price = 2400},
-            new Ticket{TicketId = 18, TicketStateId = 1, TicketConcertId = 18, TicketSeatId = 5, Ticket_Price = 2300}
+
+                var ticket_states = new TicketState[]
+            {
+            new TicketState{TicketState_Name = "Вільно"},
+            new TicketState{TicketState_Name = "Заброньовано"},
+            new TicketState{TicketState_Name = "Куплено"}
             };
-            foreach (Ticket t in tickets)
-            {
-                context.Tickets.Add(t);
+                foreach (TicketState ts in ticket_states)
+                {
+                    context.TicketStates.Add(ts);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
+
+            if (!context.Tickets.Any())
+            {
+
+                var tickets = new Ticket[]
+            {
+            new Ticket{TicketStateId = 1, ConcertId = 1, SeatId = 1, Ticket_Price = 1200},
+            new Ticket{TicketStateId = 1, ConcertId = 2, SeatId = 2, Ticket_Price = 1500},
+            new Ticket{TicketStateId = 1, ConcertId = 3, SeatId = 3, Ticket_Price = 1400},
+            new Ticket{TicketStateId = 1, ConcertId = 4, SeatId = 4, Ticket_Price = 900},
+            new Ticket{TicketStateId = 1, ConcertId = 5, SeatId = 5, Ticket_Price = 850},
+            new Ticket{TicketStateId = 1, ConcertId = 6, SeatId = 6, Ticket_Price = 1700},
+            new Ticket{TicketStateId = 1, ConcertId = 7, SeatId = 7, Ticket_Price = 1300},
+            new Ticket{TicketStateId = 1, ConcertId = 8, SeatId = 8, Ticket_Price = 1200},
+            new Ticket{TicketStateId = 1, ConcertId = 9, SeatId = 9, Ticket_Price = 1250},
+            new Ticket{TicketStateId = 1, ConcertId = 10, SeatId = 10, Ticket_Price = 1560},
+            new Ticket{TicketStateId = 1, ConcertId = 11, SeatId = 1, Ticket_Price = 2300},
+            new Ticket{TicketStateId = 1, ConcertId = 12, SeatId = 6, Ticket_Price = 2000},
+            new Ticket{TicketStateId = 1, ConcertId = 13, SeatId = 2, Ticket_Price = 550},
+            new Ticket{TicketStateId = 1, ConcertId = 14, SeatId = 7, Ticket_Price = 3100},
+            new Ticket{TicketStateId = 1, ConcertId = 15, SeatId = 3, Ticket_Price = 1950},
+            new Ticket{TicketStateId = 1, ConcertId = 16, SeatId = 4, Ticket_Price = 1000},
+            new Ticket{TicketStateId = 1, ConcertId = 17, SeatId = 10, Ticket_Price = 2400},
+            new Ticket{TicketStateId = 1, ConcertId = 18, SeatId = 5, Ticket_Price = 2300}
+            };
+                foreach (Ticket t in tickets)
+                {
+                    context.Tickets.Add(t);
+                }
+                context.SaveChanges();
+            }
         }
     }
 }
